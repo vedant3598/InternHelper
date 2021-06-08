@@ -8,6 +8,6 @@ intents.members = True
 # Discord Token for DSC_bot
 TOKEN = 'DISCORD_TOKEN'
 
-intern_bot = commands.Bot(command_prefix='/', intents=intents)
+intern_bot = commands.Bot(command_prefix='$', intents=intents)
 
 intern_bot.run(TOKEN)
