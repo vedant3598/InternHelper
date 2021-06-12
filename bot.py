@@ -34,6 +34,12 @@ async def server_info(ctx):
 
     await ctx.send(embed = server)
 
+
+# searches for job listings with company name and position provided
+@intern_helper_bot.command(name='search <company_name> <position>')
+async def server_info(ctx):
+    cursor = connection.cursor()
+
 # saves job listing in the database 
 @intern_helper_bot.command(name='save <company_name> <position> <notes> <location_optional>')
 async def server_info(ctx):
