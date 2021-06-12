@@ -2,7 +2,7 @@ import discord
 import os
 import sqlite3
 from discord.ext import commands
-import discord.ext.commands.errors
+from discord.ext.commands.errors import CommandNotFound
 
 intents = discord.Intents.default()
 intents.members = True
@@ -12,6 +12,25 @@ TOKEN = 'DISCORD_TOKEN'
 connection = sqlite3.connect("internships.db")
 
 intern_helper_bot = commands.Bot(command_prefix='$', intents=intents)
+
+# help commands for user
+def help_commands():
+    help_embed = discord.Embed(
+        title = 'Commands List',
+        description = "Commands InternHelper Bot accepts",
+        colour = discord.Colour.blue()
+    )
+
+    fields = [("$server_info", "Prints information about the server", False),
+            ("$search <company_name> <position>", "Searches for job listings with company name and position provided", False),
+            ("$save <company_name> <position> <notes> <location_optional>", "Saves job listing in the database ", False),
+            ('$apply <company_name> <position> <notes> <location_optional>', "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
+
+    for name, value, inline in fields:
+        help_embed.add_field(name=name, value=value, inline=inline)
+
+    return help_embed
+
 
 # returns information about the server
 @intern_helper_bot.command(name='server_info')
@@ -51,5 +70,11 @@ async def server_info(ctx):
 async def server_info(ctx):
     cursor = connection.cursor()
 
+
+# incorrect command points user to all possible commands the bot accepts
+@intern_helper_bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, CommandNotFound):
+        await ctx.send(embed = help_commands())
 
 intern_helper_bot.run(TOKEN)
