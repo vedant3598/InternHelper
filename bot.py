@@ -6,6 +6,7 @@ from discord.ext.commands.errors import CommandNotFound
 
 intents = discord.Intents.default()
 intents.members = True
+
 # Discord Token for intern_helper_bot
 TOKEN = 'DISCORD_TOKEN'
 # adding connection to internships.db
@@ -89,7 +90,7 @@ async def server_info(ctx):
     cursor = connection.cursor()
 
     command_words = []
-    
+
     cursor.execute("")
 
 
