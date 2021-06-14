@@ -22,9 +22,10 @@ def help_commands():
     )
 
     fields = [("$server_info", "Prints information about the server", False),
-            ("$search <company_name> <position>", "Searches for job listings with company name and position provided", False),
-            ("$save <company_name> <position> <notes> <location_optional>", "Saves job listing in the database ", False),
-            ('$apply <company_name> <position> <notes> <location_optional>', "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
+            ("$search_<company_name>_<position>", "Searches for job listings with company name and position provided", False),
+            ("$search_<position>", "Searches for job listings with position provided", False),
+            ("$save_<company_name>_<position>_<notes>_<location_optional>", "Saves job listing in the database ", False),
+            ('$apply_<company_name>_<position>_<notes>_<location_optional>', "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
 
     for name, value, inline in fields:
         help_embed.add_field(name=name, value=value, inline=inline)
@@ -55,20 +56,29 @@ async def server_info(ctx):
 
 
 # searches for job listings with company name and position provided
-@intern_helper_bot.command(name='search <company_name> <position>')
+@intern_helper_bot.command(name='search_<company_name>_<position>')
 async def server_info(ctx):
     cursor = connection.cursor()
+    cursor.execute("")
+
+# searches for job listings with position provided
+@intern_helper_bot.command(name='search_<position>')
+async def server_info(ctx):
+    cursor = connection.cursor()
+    cursor.execute("")
 
 # saves job listing in the database 
-@intern_helper_bot.command(name='save <company_name> <position> <notes> <location_optional>')
+@intern_helper_bot.command(name='save_<company_name>_<position>_<notes>_<location_optional>')
 async def server_info(ctx):
     cursor = connection.cursor()
+    cursor.execute("")
 
 
 # adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
-@intern_helper_bot.command(name='apply <company_name> <position> <notes> <location_optional>')
+@intern_helper_bot.command(name='apply_<company_name>_<position>_<notes>_<location_optional>')
 async def server_info(ctx):
     cursor = connection.cursor()
+    cursor.execute("")
 
 
 # incorrect command points user to all possible commands the bot accepts
