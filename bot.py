@@ -59,18 +59,27 @@ async def server_info(ctx):
 @intern_helper_bot.command(name='search_<company_name>_<position>')
 async def server_info(ctx):
     cursor = connection.cursor()
+
+    command_words = []
+
     cursor.execute("")
 
 # searches for job listings with position provided
 @intern_helper_bot.command(name='search_<position>')
 async def server_info(ctx):
     cursor = connection.cursor()
+
+    command_words = []
+
     cursor.execute("")
 
 # saves job listing in the database 
 @intern_helper_bot.command(name='save_<company_name>_<position>_<notes>_<location_optional>')
 async def server_info(ctx):
     cursor = connection.cursor()
+
+    command_words = []
+
     cursor.execute("")
 
 
@@ -78,6 +87,9 @@ async def server_info(ctx):
 @intern_helper_bot.command(name='apply_<company_name>_<position>_<notes>_<location_optional>')
 async def server_info(ctx):
     cursor = connection.cursor()
+
+    command_words = []
+    
     cursor.execute("")
 
 
