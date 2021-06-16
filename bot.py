@@ -12,6 +12,10 @@ TOKEN = 'DISCORD_TOKEN'
 # adding connection to internships.db
 connection = sqlite3.connect("internships.db")
 
+# creating connection to database to create internships table
+cursor = connection.cursor()
+cursor.execute("CREATE TABLE internships (Company TEXT, Position TEXT, Notes TEXT, Applied Bool, Interview Bool, Offer Bool)")
+
 intern_helper_bot = commands.Bot(command_prefix='$', intents=intents)
 
 # help commands for user
@@ -23,10 +27,10 @@ def help_commands():
     )
 
     fields = [("$server_info", "Prints information about the server", False),
-            ("$search_<company_name>_<position>", "Searches for job listings with company name and position provided", False),
-            ("$search_<position>", "Searches for job listings with position provided", False),
-            ("$save_<company_name>_<position>_<notes>_<location_optional>", "Saves job listing in the database ", False),
-            ('$apply_<company_name>_<position>_<notes>_<location_optional>', "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
+            ("$search \"<company name> <position>\"", "Searches for job listings with company name and position provided", False),
+            ("$search \"<position>\"", "Searches for job listings with position provided", False),
+            ("$save \"<company name> <position> <notes>\"", "Saves job listing in the database ", False),
+            ("$applied \"<company_name> <position> <notes>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
 
     for name, value, inline in fields:
         help_embed.add_field(name=name, value=value, inline=inline)
@@ -35,7 +39,7 @@ def help_commands():
 
 
 # returns information about the server
-@intern_helper_bot.command(name='server_info')
+@intern_helper_bot.command()
 async def server_info(ctx):
     server = discord.Embed(
         title = 'Server Info',
@@ -56,43 +60,51 @@ async def server_info(ctx):
     await ctx.send(embed = server)
 
 
-# searches for job listings with company name and position provided
-@intern_helper_bot.command(name='search_<company_name>_<position>')
-async def server_info(ctx):
+# searches for job listings with company name or position (or both) provided - search "<company_name> <position>" or search "<position>"
+@intern_helper_bot.command()
+async def search(ctx, *args):
     cursor = connection.cursor()
 
     command_words = []
 
     cursor.execute("")
 
-# searches for job listings with position provided
-@intern_helper_bot.command(name='search_<position>')
-async def server_info(ctx):
+# saves job listing in the database - save "<company name> <position> <notes>""
+@intern_helper_bot.command()
+async def save(ctx, *args):
     cursor = connection.cursor()
 
-    command_words = []
+    commands = []
 
-    cursor.execute("")
+    for arg in args:
+        commands.append(arg)
 
-# saves job listing in the database 
-@intern_helper_bot.command(name='save_<company_name>_<position>_<notes>_<location_optional>')
-async def server_info(ctx):
-    cursor = connection.cursor()
-
-    command_words = []
-
-    cursor.execute("")
-
+    cursor.execute("UPSERT INTO internships (Company, Position, Notes) VALUES ({company},{pos},{notes})".format(company=args[0],pos=args[1],notes=args[2]))
+    await ctx.send("Command completed")
 
 # adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
-@intern_helper_bot.command(name='apply_<company_name>_<position>_<notes>_<location_optional>')
-async def server_info(ctx):
+# applied "<company_name>_<position>_<notes>"
+@intern_helper_bot.command()
+async def applied(ctx, *args):
     cursor = connection.cursor()
 
     command_words = []
 
     cursor.execute("")
 
+
+# searched for job in the database based on command - search "<company name>""
+@intern_helper_bot.command()
+async def search(ctx, *args):
+    cursor = connection.cursor()
+
+    commands = []
+
+    for arg in args:
+        commands.append(arg)
+
+
+    cursor.execute("")
 
 # incorrect command points user to all possible commands the bot accepts
 @intern_helper_bot.event
