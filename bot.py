@@ -27,10 +27,10 @@ def help_commands():
     )
 
     fields = [("$server_info", "Prints information about the server", False),
-            ("$search \"<company name> <position>\"", "Searches for job listings with company name and position provided", False),
+            ("$search \"<company name>\" \"<position>\"", "Searches for job listings with company name and position provided", False),
             ("$search \"<position>\"", "Searches for job listings with position provided", False),
-            ("$save \"<company name> <position> <notes>\"", "Saves job listing in the database ", False),
-            ("$applied \"<company_name> <position> <notes>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
+            ("$save \"<company name>\" \"<position>\"", "Saves job listing in the database ", False),
+            ("$applied \"<company name>\" \"<position>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
 
     for name, value, inline in fields:
         help_embed.add_field(name=name, value=value, inline=inline)
@@ -60,7 +60,7 @@ async def server_info(ctx):
     await ctx.send(embed = server)
 
 
-# searches for job listings with company name or position (or both) provided - search "<company_name> <position>" or search "<position>"
+# searches for job listings with company name or position (or both) provided - search "<company name>" "<position>" or search "<position>"
 @intern_helper_bot.command()
 async def search(ctx, *args):
     cursor = connection.cursor()
@@ -69,9 +69,33 @@ async def search(ctx, *args):
 
     cursor.execute("")
 
-# saves job listing in the database - save "<company name> <position> <notes>""
+# saves job listing in the database - save "<company name>" "<position>"
 @intern_helper_bot.command()
 async def save(ctx, *args):
+    cursor = connection.cursor()
+    commands = []
+    for arg in args:
+        commands.append(arg)
+
+    cursor.execute("UPSERT INTO internships (Company, Position) VALUES ({company},{pos})".format(company=args[0],pos=args[1]))
+    await ctx.send("Command completed")
+
+# adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
+# applied "<company name>" "<position>"
+@intern_helper_bot.command()
+async def applied(ctx, *args):
+    cursor = connection.cursor()
+    commands = []
+    for arg in args:
+        commands.append(arg)
+
+    cursor.execute("UPSERT INTO internships (Applied) VALUES (true) WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1]))
+    await ctx.send("Command completed")
+
+
+# searched for job in the database based on company - search_company "<company name>"
+@intern_helper_bot.command()
+async def search_company(ctx, *args):
     cursor = connection.cursor()
 
     commands = []
@@ -79,23 +103,51 @@ async def save(ctx, *args):
     for arg in args:
         commands.append(arg)
 
-    cursor.execute("UPSERT INTO internships (Company, Position, Notes) VALUES ({company},{pos},{notes})".format(company=args[0],pos=args[1],notes=args[2]))
-    await ctx.send("Command completed")
-
-# adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
-# applied "<company_name>_<position>_<notes>"
-@intern_helper_bot.command()
-async def applied(ctx, *args):
-    cursor = connection.cursor()
-
-    command_words = []
 
     cursor.execute("")
 
-
-# searched for job in the database based on command - search "<company name>""
+# searched for job in the database based on position - search_position "<position>"
 @intern_helper_bot.command()
-async def search(ctx, *args):
+async def search_position(ctx, *args):
+    cursor = connection.cursor()
+
+    commands = []
+
+    for arg in args:
+        commands.append(arg)
+
+
+    cursor.execute("")
+
+# searched for job in the database based on applied - search_applied "<bool>"
+@intern_helper_bot.command()
+async def search_applied(ctx, *args):
+    cursor = connection.cursor()
+
+    commands = []
+
+    for arg in args:
+        commands.append(arg)
+
+
+    cursor.execute("")
+
+# searched for job in the database based on interview - search_interview "<bool>"
+@intern_helper_bot.command()
+async def search_interview(ctx, *args):
+    cursor = connection.cursor()
+
+    commands = []
+
+    for arg in args:
+        commands.append(arg)
+
+
+    cursor.execute("")
+
+# searched for job in the database based on offer - search_offer "<bool>"
+@intern_helper_bot.command()
+async def search_offer(ctx, *args):
     cursor = connection.cursor()
 
     commands = []
