@@ -77,7 +77,8 @@ async def save(ctx, *args):
     for arg in args:
         commands.append(arg)
 
-    cursor.execute("UPSERT INTO internships (Company, Position) VALUES ({company},{pos})".format(company=args[0],pos=args[1]))
+    query = "UPSERT INTO internships (Company, Position) VALUES ({company},{pos})".format(company=args[0],pos=args[1])
+    cursor.execute(query)
     await ctx.send("Command completed")
 
 # adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
@@ -89,35 +90,40 @@ async def applied(ctx, *args):
     for arg in args:
         commands.append(arg)
 
-    cursor.execute("UPSERT INTO internships (Applied) VALUES (true) WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1]))
+    query = "UPSERT INTO internships (Applied) VALUES (true) WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+    cursor.execute(query)
     await ctx.send("Command completed")
 
 
 # searched for job in the database based on company - search_company "<company name>"
 @intern_helper_bot.command()
-async def search_company(ctx, *args):
+async def search_company(ctx, arg):
     cursor = connection.cursor()
+    query = "SELECT * FROM internships WHERE Company={company}".format(company=arg)
+    cursor.execute(query)
 
-    commands = []
+    rows = cursor.fetchall()
+    if len(rows) == 0:
+        await ctx.send("Company does not exist in database.")
+    else:
+        await ctx.send(rows)
 
-    for arg in args:
-        commands.append(arg)
-
-
-    cursor.execute("")
+    await ctx.send("Command completed")
 
 # searched for job in the database based on position - search_position "<position>"
 @intern_helper_bot.command()
-async def search_position(ctx, *args):
+async def search_position(ctx, arg):
     cursor = connection.cursor()
+    query = "SELECT * FROM internships WHERE Position={pos}".format(pos=arg)
+    cursor.execute(query)
 
-    commands = []
+    rows = cursor.fetchall()
+    if len(rows) == 0:
+        await ctx.send("Company does not exist in database.")
+    else:
+        await ctx.send(rows)
 
-    for arg in args:
-        commands.append(arg)
-
-
-    cursor.execute("")
+    await ctx.send("Command completed")
 
 # searched for job in the database based on applied - search_applied "<bool>"
 @intern_helper_bot.command()
