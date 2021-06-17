@@ -95,7 +95,7 @@ async def applied(ctx, *args):
     await ctx.send("Command completed")
 
 
-# searched for job in the database based on company - search_company "<company name>"
+# search for job in the database based on company - search_company "<company name>"
 @intern_helper_bot.command()
 async def search_company(ctx, arg):
     cursor = connection.cursor()
@@ -110,7 +110,7 @@ async def search_company(ctx, arg):
 
     await ctx.send("Command completed")
 
-# searched for job in the database based on position - search_position "<position>"
+# search for job in the database based on position - search_position "<position>"
 @intern_helper_bot.command()
 async def search_position(ctx, arg):
     cursor = connection.cursor()
@@ -125,7 +125,7 @@ async def search_position(ctx, arg):
 
     await ctx.send("Command completed")
 
-# searched for job in the database based on applied - search_applied "<bool>"
+# search for job in the database based on applied - search_applied "<bool>"
 @intern_helper_bot.command()
 async def search_applied(ctx, *args):
     cursor = connection.cursor()
@@ -138,7 +138,7 @@ async def search_applied(ctx, *args):
 
     cursor.execute("")
 
-# searched for job in the database based on interview - search_interview "<bool>"
+# search for job in the database based on interview - search_interview "<bool>"
 @intern_helper_bot.command()
 async def search_interview(ctx, *args):
     cursor = connection.cursor()
@@ -151,7 +151,7 @@ async def search_interview(ctx, *args):
 
     cursor.execute("")
 
-# searched for job in the database based on offer - search_offer "<bool>"
+# search for job in the database based on offer - search_offer "<bool>"
 @intern_helper_bot.command()
 async def search_offer(ctx, *args):
     cursor = connection.cursor()
