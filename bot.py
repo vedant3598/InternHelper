@@ -144,20 +144,24 @@ async def search_applied(ctx, arg):
 
 # search for job in the database based on interview - search_interview "<bool>"
 @intern_helper_bot.command()
-async def search_interview(ctx, *args):
+async def search_interview(ctx, arg):
     cursor = connection.cursor()
+    query = "SELECT * FROM internships WHERE Interview={interview}".format(interview=arg)
+    cursor.execute(query)
 
-    commands = []
+    rows = cursor.fetchall()
+    if len(rows) == 0 and (arg == "false" or arg == "False"):
+        await ctx.send("You have interviews from all saved jobs! Great job!")
+    elif len(rows) == 0 and (arg == "true" or arg == "True"):
+        await ctx.send("Unfortunately, you do not have interviews. Keep trying! I believe in you!")
+    else:
+        await ctx.send(rows)
 
-    for arg in args:
-        commands.append(arg)
-
-
-    cursor.execute("")
+    await ctx.send("Command completed")
 
 # search for job in the database based on offer - search_offer "<bool>"
 @intern_helper_bot.command()
-async def search_offer(ctx, *args):
+async def search_offer(ctx, arg):
     cursor = connection.cursor()
 
     commands = []
