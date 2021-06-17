@@ -119,7 +119,7 @@ async def search_position(ctx, arg):
 
     rows = cursor.fetchall()
     if len(rows) == 0:
-        await ctx.send("Company does not exist in database.")
+        await ctx.send("Position does not exist in database.")
     else:
         await ctx.send(rows)
 
@@ -127,16 +127,20 @@ async def search_position(ctx, arg):
 
 # search for job in the database based on applied - search_applied "<bool>"
 @intern_helper_bot.command()
-async def search_applied(ctx, *args):
+async def search_applied(ctx, arg):
     cursor = connection.cursor()
+    query = "SELECT * FROM internships WHERE Applied={apply}".format(apply=arg)
+    cursor.execute(query)
 
-    commands = []
+    rows = cursor.fetchall()
+    if len(rows) == 0 and (arg == "false" or arg == "False"):
+        await ctx.send("You have applied to all saved jobs! Great job!")
+    elif len(rows) == 0 and (arg == "true" or arg == "True"):
+        await ctx.send("You have not applied to any of your saved jobs.")
+    else:
+        await ctx.send(rows)
 
-    for arg in args:
-        commands.append(arg)
-
-
-    cursor.execute("")
+    await ctx.send("Command completed")
 
 # search for job in the database based on interview - search_interview "<bool>"
 @intern_helper_bot.command()
