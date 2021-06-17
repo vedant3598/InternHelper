@@ -163,14 +163,18 @@ async def search_interview(ctx, arg):
 @intern_helper_bot.command()
 async def search_offer(ctx, arg):
     cursor = connection.cursor()
+    query = "SELECT * FROM internships WHERE Offer={offer}".format(offer=arg)
+    cursor.execute(query)
 
-    commands = []
+    rows = cursor.fetchall()
+    if len(rows) == 0 and (arg == "false" or arg == "False"):
+        await ctx.send("You have offers from all saved jobs! Great job!")
+    elif len(rows) == 0 and (arg == "true" or arg == "True"):
+        await ctx.send("Unfortunately, you do not have offers. Keep trying! I believe in you!")
+    else:
+        await ctx.send(rows)
 
-    for arg in args:
-        commands.append(arg)
-
-
-    cursor.execute("")
+    await ctx.send("Command completed")
 
 # incorrect command points user to all possible commands the bot accepts
 @intern_helper_bot.event
