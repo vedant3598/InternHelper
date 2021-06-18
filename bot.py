@@ -31,6 +31,7 @@ def help_commands():
     fields = [("$server_info", "Prints information about the server", False),
             ("$search_job \"<company name>\" \"<position>\"", "Searches for job listings with company name and position provided", False),
             ("$search_position \"<position>\"", "Searches for job listings with position provided", False),
+            ("$search_company \"<company name>\"", "Searches for job listings with company name provided", False),
             ("$save \"<company name>\" \"<position>\"", "Saves job listing in the database ", False),
             ("$applied \"<company name>\" \"<position>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
 
@@ -90,6 +91,20 @@ async def search_position(ctx, *args):
         logging.error("Error: ", Error)
 
 
+# searches for job listings with company provided - search "<company>"
+@intern_helper_bot.command()
+async def search_company(ctx, *args):
+    try:
+        cursor = connection.cursor()
+
+        command_words = []
+
+        cursor.execute("")
+    except Error:
+        # Change this error message with more appropriate message
+        logging.error("Error: ", Error)
+
+
 # saves job listing in the database - save "<company name>" "<position>"
 @intern_helper_bot.command()
 async def save(ctx, *args):
@@ -125,9 +140,9 @@ async def applied(ctx, *args):
         await ctx.send("Please check the input as you are missing the company name or position (or both).")
 
 
-# search for job in the database based on company - search_company "<company name>"
+# search for job in the database based on company - find_company "<company name>"
 @intern_helper_bot.command()
-async def search_company(ctx, arg):
+async def find_company(ctx, arg):
     try:
         cursor = connection.cursor()
         query = "SELECT * FROM internships WHERE Company={company}".format(company=arg)
@@ -143,9 +158,9 @@ async def search_company(ctx, arg):
         await ctx.send("Please check the input as you might be missing the company name.")
 
 
-# search for job in the database based on position - search_position "<position>"
+# search for job in the database based on position - find_position "<position>"
 @intern_helper_bot.command()
-async def search_position(ctx, arg):
+async def find_position(ctx, arg):
     try:
         cursor = connection.cursor()
         query = "SELECT * FROM internships WHERE Position={pos}".format(pos=arg)
@@ -161,9 +176,9 @@ async def search_position(ctx, arg):
         await ctx.send("Please check the input as you might be missing the position.")
 
 
-# search for job in the database based on applied - search_applied "<bool>"
+# search for job in the database based on applied - find_applied "<bool>"
 @intern_helper_bot.command()
-async def search_applied(ctx, arg):
+async def find_applied(ctx, arg):
     try:
         cursor = connection.cursor()
         query = "SELECT * FROM internships WHERE Applied={apply}".format(apply=arg)
@@ -181,9 +196,9 @@ async def search_applied(ctx, arg):
         await ctx.send("Please check the input as you might be missing the \'Applied\' boolean tag (true or false).")
 
 
-# search for job in the database based on interview - search_interview "<bool>"
+# search for job in the database based on interview - find_interviews "<bool>"
 @intern_helper_bot.command()
-async def search_interview(ctx, arg):
+async def find_interviews(ctx, arg):
     try:
         cursor = connection.cursor()
         query = "SELECT * FROM internships WHERE Interview={interview}".format(interview=arg)
@@ -201,9 +216,9 @@ async def search_interview(ctx, arg):
         await ctx.send("Please check the input as you might be missing the \'Interview\' boolean tag (true or false).")
 
 
-# search for job in the database based on offer - search_offer "<bool>"
+# search for job in the database based on offer - find_offers "<bool>"
 @intern_helper_bot.command()
-async def search_offer(ctx, arg):
+async def find_offers(ctx, arg):
     try:
         cursor = connection.cursor()
         query = "SELECT * FROM internships WHERE Offer={offer}".format(offer=arg)
