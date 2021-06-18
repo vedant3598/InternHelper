@@ -29,8 +29,8 @@ def help_commands():
     )
 
     fields = [("$server_info", "Prints information about the server", False),
-            ("$search \"<company name>\" \"<position>\"", "Searches for job listings with company name and position provided", False),
-            ("$search \"<position>\"", "Searches for job listings with position provided", False),
+            ("$search_job \"<company name>\" \"<position>\"", "Searches for job listings with company name and position provided", False),
+            ("$search_position \"<position>\"", "Searches for job listings with position provided", False),
             ("$save \"<company name>\" \"<position>\"", "Saves job listing in the database ", False),
             ("$applied \"<company name>\" \"<position>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
 
@@ -62,7 +62,7 @@ async def server_info(ctx):
     await ctx.send(embed = server)
 
 
-# searches for job listings with company name or position (or both) provided - search "<company name>" "<position>" or search "<position>"
+# searches for job listings with company name and position provided - search "<company name>" "<position>" 
 @intern_helper_bot.command()
 async def search_job(ctx, *args):
     try:
@@ -74,6 +74,21 @@ async def search_job(ctx, *args):
     except Error:
         # Change this error message with more appropriate message
         logging.error("Error: ", Error)
+
+
+# searches for job listings with position provided - search "<position>"
+@intern_helper_bot.command()
+async def search_position(ctx, *args):
+    try:
+        cursor = connection.cursor()
+
+        command_words = []
+
+        cursor.execute("")
+    except Error:
+        # Change this error message with more appropriate message
+        logging.error("Error: ", Error)
+
 
 # saves job listing in the database - save "<company name>" "<position>"
 @intern_helper_bot.command()
