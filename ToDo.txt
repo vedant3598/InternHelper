@@ -1,6 +1,4 @@
 TO DO:
-* Add exception handling for SQL queries
 * Add more search capabalities for user
-* Add search commands in command list
 * Integrate Indeed and LinkedIn job searching APIS
 * Add capability that allows user to get graphs (of something useful)
