@@ -1,8 +1,10 @@
+from sqlite3.dbapi2 import Error
 import discord
 import os
 import sqlite3
 from discord.ext import commands
 from discord.ext.commands.errors import CommandNotFound
+import logging
 
 intents = discord.Intents.default()
 intents.members = True
@@ -62,119 +64,147 @@ async def server_info(ctx):
 
 # searches for job listings with company name or position (or both) provided - search "<company name>" "<position>" or search "<position>"
 @intern_helper_bot.command()
-async def search(ctx, *args):
-    cursor = connection.cursor()
+async def search_job(ctx, *args):
+    try:
+        cursor = connection.cursor()
 
-    command_words = []
+        command_words = []
 
-    cursor.execute("")
+        cursor.execute("")
+    except Error:
+        # Change this error message with more appropriate message
+        logging.error("Error: ", Error)
 
 # saves job listing in the database - save "<company name>" "<position>"
 @intern_helper_bot.command()
 async def save(ctx, *args):
-    cursor = connection.cursor()
-    commands = []
-    for arg in args:
-        commands.append(arg)
+    try:
+        cursor = connection.cursor()
+        commands = []
+        for arg in args:
+            commands.append(arg)
 
-    query = "UPSERT INTO internships (Company, Position) VALUES ({company},{pos})".format(company=args[0],pos=args[1])
-    cursor.execute(query)
-    await ctx.send("Command completed")
+        query = "UPSERT INTO internships (Company, Position) VALUES ({company},{pos})".format(company=args[0],pos=args[1])
+        cursor.execute(query)
+        await ctx.send("Job listing saved!")
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        await ctx.send("Please check the input as you are missing the company name or position (or both).")
+
 
 # adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
 # applied "<company name>" "<position>"
 @intern_helper_bot.command()
 async def applied(ctx, *args):
-    cursor = connection.cursor()
-    commands = []
-    for arg in args:
-        commands.append(arg)
+    try:
+        cursor = connection.cursor()
+        commands = []
+        for arg in args:
+            commands.append(arg)
 
-    query = "UPSERT INTO internships (Applied) VALUES (true) WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
-    cursor.execute(query)
-    await ctx.send("Command completed")
+        query = "UPSERT INTO internships (Applied) VALUES (true) WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        cursor.execute(query)
+        await ctx.send("Apply tag added to job listing. Good luck on your job search!")
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        await ctx.send("Please check the input as you are missing the company name or position (or both).")
 
 
 # search for job in the database based on company - search_company "<company name>"
 @intern_helper_bot.command()
 async def search_company(ctx, arg):
-    cursor = connection.cursor()
-    query = "SELECT * FROM internships WHERE Company={company}".format(company=arg)
-    cursor.execute(query)
+    try:
+        cursor = connection.cursor()
+        query = "SELECT * FROM internships WHERE Company={company}".format(company=arg)
+        cursor.execute(query)
 
-    rows = cursor.fetchall()
-    if len(rows) == 0:
-        await ctx.send("Company does not exist in database.")
-    else:
-        await ctx.send(rows)
+        rows = cursor.fetchall()
+        if len(rows) == 0:
+            await ctx.send("Company does not exist in database.")
+        else:
+            await ctx.send(rows)
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        await ctx.send("Please check the input as you might be missing the company name.")
 
-    await ctx.send("Command completed")
 
 # search for job in the database based on position - search_position "<position>"
 @intern_helper_bot.command()
 async def search_position(ctx, arg):
-    cursor = connection.cursor()
-    query = "SELECT * FROM internships WHERE Position={pos}".format(pos=arg)
-    cursor.execute(query)
+    try:
+        cursor = connection.cursor()
+        query = "SELECT * FROM internships WHERE Position={pos}".format(pos=arg)
+        cursor.execute(query)
 
-    rows = cursor.fetchall()
-    if len(rows) == 0:
-        await ctx.send("Position does not exist in database.")
-    else:
-        await ctx.send(rows)
+        rows = cursor.fetchall()
+        if len(rows) == 0:
+            await ctx.send("Position does not exist in database.")
+        else:
+            await ctx.send(rows)
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        await ctx.send("Please check the input as you might be missing the position.")
 
-    await ctx.send("Command completed")
 
 # search for job in the database based on applied - search_applied "<bool>"
 @intern_helper_bot.command()
 async def search_applied(ctx, arg):
-    cursor = connection.cursor()
-    query = "SELECT * FROM internships WHERE Applied={apply}".format(apply=arg)
-    cursor.execute(query)
+    try:
+        cursor = connection.cursor()
+        query = "SELECT * FROM internships WHERE Applied={apply}".format(apply=arg)
+        cursor.execute(query)
 
-    rows = cursor.fetchall()
-    if len(rows) == 0 and (arg == "false" or arg == "False"):
-        await ctx.send("You have applied to all saved jobs! Great job!")
-    elif len(rows) == 0 and (arg == "true" or arg == "True"):
-        await ctx.send("You have not applied to any of your saved jobs.")
-    else:
-        await ctx.send(rows)
+        rows = cursor.fetchall()
+        if len(rows) == 0 and (arg == "false" or arg == "False"):
+            await ctx.send("You have applied to all saved jobs! Great job!")
+        elif len(rows) == 0 and (arg == "true" or arg == "True"):
+            await ctx.send("You have not applied to any of your saved jobs.")
+        else:
+            await ctx.send(rows)
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        await ctx.send("Please check the input as you might be missing the \'Applied\' boolean tag (true or false).")
 
-    await ctx.send("Command completed")
 
 # search for job in the database based on interview - search_interview "<bool>"
 @intern_helper_bot.command()
 async def search_interview(ctx, arg):
-    cursor = connection.cursor()
-    query = "SELECT * FROM internships WHERE Interview={interview}".format(interview=arg)
-    cursor.execute(query)
+    try:
+        cursor = connection.cursor()
+        query = "SELECT * FROM internships WHERE Interview={interview}".format(interview=arg)
+        cursor.execute(query)
 
-    rows = cursor.fetchall()
-    if len(rows) == 0 and (arg == "false" or arg == "False"):
-        await ctx.send("You have interviews from all saved jobs! Great job!")
-    elif len(rows) == 0 and (arg == "true" or arg == "True"):
-        await ctx.send("Unfortunately, you do not have interviews. Keep trying! I believe in you!")
-    else:
-        await ctx.send(rows)
+        rows = cursor.fetchall()
+        if len(rows) == 0 and (arg == "false" or arg == "False"):
+            await ctx.send("You have interviews from all saved jobs! Great job!")
+        elif len(rows) == 0 and (arg == "true" or arg == "True"):
+            await ctx.send("Unfortunately, you do not have interviews. Keep trying! I believe in you!")
+        else:
+            await ctx.send(rows)
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        await ctx.send("Please check the input as you might be missing the \'Interview\' boolean tag (true or false).")
 
-    await ctx.send("Command completed")
 
 # search for job in the database based on offer - search_offer "<bool>"
 @intern_helper_bot.command()
 async def search_offer(ctx, arg):
-    cursor = connection.cursor()
-    query = "SELECT * FROM internships WHERE Offer={offer}".format(offer=arg)
-    cursor.execute(query)
+    try:
+        cursor = connection.cursor()
+        query = "SELECT * FROM internships WHERE Offer={offer}".format(offer=arg)
+        cursor.execute(query)
 
-    rows = cursor.fetchall()
-    if len(rows) == 0 and (arg == "false" or arg == "False"):
-        await ctx.send("You have offers from all saved jobs! Great job!")
-    elif len(rows) == 0 and (arg == "true" or arg == "True"):
-        await ctx.send("Unfortunately, you do not have offers. Keep trying! I believe in you!")
-    else:
-        await ctx.send(rows)
+        rows = cursor.fetchall()
+        if len(rows) == 0 and (arg == "false" or arg == "False"):
+            await ctx.send("You have offers from all saved jobs! Great job!")
+        elif len(rows) == 0 and (arg == "true" or arg == "True"):
+            await ctx.send("Unfortunately, you do not have offers. Keep trying! I believe in you!")
+        else:
+            await ctx.send(rows)
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        await ctx.send("Please check the input as you might be missing the \'Offer\' boolean tag (true or false).")
 
-    await ctx.send("Command completed")
 
 # incorrect command points user to all possible commands the bot accepts
 @intern_helper_bot.event
