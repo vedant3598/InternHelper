@@ -32,8 +32,13 @@ def help_commands():
             ("$search_job \"<company name>\" \"<position>\"", "Searches for job listings with company name and position provided", False),
             ("$search_position \"<position>\"", "Searches for job listings with position provided", False),
             ("$search_company \"<company name>\"", "Searches for job listings with company name provided", False),
-            ("$save \"<company name>\" \"<position>\"", "Saves job listing in the database ", False),
-            ("$applied \"<company name>\" \"<position>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False)]
+            ("$save_job \"<company name>\" \"<position>\"", "Saves job listing in the database ", False),
+            ("$applied \"<company name>\" \"<position>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False),
+            ("$find_company \"<company name>\"", "Searches for jobs in the database with company name provided", False),
+            ("$find_position \"<position>\"", "Searches for jobs in the database with position provided", False),
+            ("$find_applied \"<bool>\"", "Searches for jobs in the database based on applied boolean value provided (true or false)", False),
+            ("$find_interviews \"<bool>\"", "Searches for jobs in the database based on interview boolean value provided (true or false)", False),
+            ("$find_offers \"<bool>\"", "Searches for jobs in the database based on offer boolean value provided (true or false)", False)]
 
     for name, value, inline in fields:
         help_embed.add_field(name=name, value=value, inline=inline)
@@ -107,7 +112,7 @@ async def search_company(ctx, *args):
 
 # saves job listing in the database - save "<company name>" "<position>"
 @intern_helper_bot.command()
-async def save(ctx, *args):
+async def save_job(ctx, *args):
     try:
         cursor = connection.cursor()
         commands = []
