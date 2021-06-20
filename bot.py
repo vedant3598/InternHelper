@@ -38,7 +38,8 @@ def help_commands():
             ("$find_position \"<position>\"", "Searches for jobs in the database with position provided", False),
             ("$find_applied \"<bool>\"", "Searches for jobs in the database based on applied boolean value provided (true or false)", False),
             ("$find_interviews \"<bool>\"", "Searches for jobs in the database based on interview boolean value provided (true or false)", False),
-            ("$find_offers \"<bool>\"", "Searches for jobs in the database based on offer boolean value provided (true or false)", False)]
+            ("$find_offers \"<bool>\"", "Searches for jobs in the database based on offer boolean value provided (true or false)", False),
+            ("$get_database", "Outputs the database to the user", False)]
 
     for name, value, inline in fields:
         help_embed.add_field(name=name, value=value, inline=inline)
@@ -241,7 +242,7 @@ async def find_offers(ctx, arg):
         await ctx.send("Please check the input as you might be missing the \'Offer\' boolean tag (true or false).")
 
 
-# send database to user - get_database
+# outputs database to user - get_database
 @intern_helper_bot.command()
 async def get_database(ctx):
     await ctx.send(file=discord.File('internships.db'))
