@@ -241,6 +241,11 @@ async def find_offers(ctx, arg):
         await ctx.send("Please check the input as you might be missing the \'Offer\' boolean tag (true or false).")
 
 
+# send database to user - get_database
+@intern_helper_bot.command()
+async def get_database(ctx):
+    await ctx.send(file=discord.File('internships.db'))
+
 # incorrect command points user to all possible commands the bot accepts
 @intern_helper_bot.event
 async def on_command_error(ctx, error):
