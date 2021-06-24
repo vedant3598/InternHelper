@@ -187,7 +187,7 @@ async def insert_offer(ctx, *args):
     except sqlite3.Error as error:
         logging.error("Error: ", error)
         cursor = connection.cursor()
-        query = "UPDATE internships SET Applied=true, Interview=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        query = "INSERT INTO internships Values({company}, {pos}, true, true, true)".format(company=args[0],pos=args[1])
         cursor.execute(query)
         #await ctx.send("Please check the input as you are missing the company name or position (or both).")
     finally:
