@@ -169,7 +169,7 @@ async def insert_interview(ctx, *args):
         cursor.execute(query)
         #await ctx.send("Please check the input as you are missing the company name or position (or both).")
     finally:
-        await ctx.send("Apply tag added to job listing. Good luck on your job search!")
+        await ctx.send("Interview tag added to job listing. Good luck on your interview, you will do great!")
 
 
 # adds offer tag to an existing job listing in the database; if job listing does not exist, adds it with offer tag
@@ -191,7 +191,7 @@ async def insert_offer(ctx, *args):
         cursor.execute(query)
         #await ctx.send("Please check the input as you are missing the company name or position (or both).")
     finally:
-        await ctx.send("Apply tag added to job listing. Good luck on your job search!")
+        await ctx.send("Offer tag added to job listing. Great job on getting your offer letter!")
 
 
 # search for job in the database based on company - find_company "<company name>"
