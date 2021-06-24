@@ -16,7 +16,7 @@ connection = sqlite3.connect("internships.db")
 
 # creating connection to database to create internships table
 cursor = connection.cursor()
-cursor.execute("CREATE TABLE internships (Company TEXT, Position TEXT, Notes TEXT, Applied Bool, Interview Bool, Offer Bool)")
+cursor.execute("CREATE TABLE internships (Company TEXT, Position TEXT, Applied Bool, Interview Bool, Offer Bool)")
 
 intern_helper_bot = commands.Bot(command_prefix='$', intents=intents)
 
@@ -120,7 +120,7 @@ async def save_job(ctx, *args):
         for arg in args:
             commands.append(arg)
 
-        query = "UPSERT INTO internships (Company, Position) VALUES ({company},{pos})".format(company=args[0],pos=args[1])
+        query = "INSERT INTO internships VALUES ({company},{pos},false, false, false)".format(company=args[0],pos=args[1])
         cursor.execute(query)
         await ctx.send("Job listing saved!")
     except sqlite3.Error as error:
@@ -129,21 +129,51 @@ async def save_job(ctx, *args):
 
 
 # adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
-# applied "<company name>" "<position>"
+# insert_apply "<company name>" "<position>"
 @intern_helper_bot.command()
-async def applied(ctx, *args):
+async def insert_apply(ctx, *args):
+    commands = []
+    for arg in args:
+        commands.append(arg)
+
     try:
         cursor = connection.cursor()
-        commands = []
-        for arg in args:
-            commands.append(arg)
 
-        query = "UPSERT INTO internships (Applied) VALUES (true) WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        query = "UPDATE internships SET Applied=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
         cursor.execute(query)
-        await ctx.send("Apply tag added to job listing. Good luck on your job search!")
     except sqlite3.Error as error:
         logging.error("Error: ", error)
-        await ctx.send("Please check the input as you are missing the company name or position (or both).")
+        cursor = connection.cursor()
+
+        query = "INSERT INTO internships Values({company}, {pos}, true, false, false)".format(company=args[0],pos=args[1])
+        cursor.execute(query)
+        #await ctx.send("Please check the input as you are missing the company name or position (or both).")
+    finally:
+        await ctx.send("Apply tag added to job listing. Good luck on your job search!")
+
+
+# adds interview tag to an existing job listing in the database; if job listing does not exist, adds it with interview tag
+# insert_interview "<company name>" "<position>"
+@intern_helper_bot.command()
+async def insert_interview(ctx, *args):
+    commands = []
+    for arg in args:
+        commands.append(arg)
+
+    try:
+        cursor = connection.cursor()
+
+        query = "UPDATE internships SET Applied=true, Interview=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        cursor.execute(query)
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        cursor = connection.cursor()
+
+        query = "UPDATE internships SET Applied=true, Interview=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        cursor.execute(query)
+        #await ctx.send("Please check the input as you are missing the company name or position (or both).")
+    finally:
+        await ctx.send("Apply tag added to job listing. Good luck on your job search!")
 
 
 # search for job in the database based on company - find_company "<company name>"
