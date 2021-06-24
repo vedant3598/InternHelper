@@ -1,4 +1,8 @@
 TO DO:
-* Add more search capabalities for user
-* Integrate Indeed and LinkedIn job searching APIS
-* Add capability that allows user to get graphs (of something useful)
+* Test codebase (June 24, 2021 - June 25, 2021)
+* Integrate Indeed and LinkedIn job searching APIS (June 26, 2021 - July 10, 2021)
+* Test Indeed and LinkedIn job searching APIS (July 11, 2021 - July 18, 2021)
+* (Maybe) Add capability that allows user to get graphs (of something useful) (July 19, 2021 - August 2, 2021)
+* Test entirety of bot (August 3, 2021 - August 10, 2021)
+* Beta test bot (August 11, 2021 - August 18, 2021)
+* Publish bot (August 18, 2021)
