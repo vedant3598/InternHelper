@@ -138,13 +138,11 @@ async def insert_apply(ctx, *args):
 
     try:
         cursor = connection.cursor()
-
         query = "UPDATE internships SET Applied=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
         cursor.execute(query)
     except sqlite3.Error as error:
         logging.error("Error: ", error)
         cursor = connection.cursor()
-
         query = "INSERT INTO internships Values({company}, {pos}, true, false, false)".format(company=args[0],pos=args[1])
         cursor.execute(query)
         #await ctx.send("Please check the input as you are missing the company name or position (or both).")
@@ -162,13 +160,33 @@ async def insert_interview(ctx, *args):
 
     try:
         cursor = connection.cursor()
-
         query = "UPDATE internships SET Applied=true, Interview=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
         cursor.execute(query)
     except sqlite3.Error as error:
         logging.error("Error: ", error)
         cursor = connection.cursor()
+        query = "INSERT INTO internships Values({company}, {pos}, true, true, false)".format(company=args[0],pos=args[1])
+        cursor.execute(query)
+        #await ctx.send("Please check the input as you are missing the company name or position (or both).")
+    finally:
+        await ctx.send("Apply tag added to job listing. Good luck on your job search!")
 
+
+# adds offer tag to an existing job listing in the database; if job listing does not exist, adds it with offer tag
+# insert_offer "<company name>" "<position>"
+@intern_helper_bot.command()
+async def insert_offer(ctx, *args):
+    commands = []
+    for arg in args:
+        commands.append(arg)
+
+    try:
+        cursor = connection.cursor()
+        query = "UPDATE internships SET Applied=true, Interview=true, Offer=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        cursor.execute(query)
+    except sqlite3.Error as error:
+        logging.error("Error: ", error)
+        cursor = connection.cursor()
         query = "UPDATE internships SET Applied=true, Interview=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
         cursor.execute(query)
         #await ctx.send("Please check the input as you are missing the company name or position (or both).")
