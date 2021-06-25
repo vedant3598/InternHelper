@@ -6,19 +6,20 @@ from discord.ext import commands
 from discord.ext.commands.errors import CommandNotFound
 import logging
 
+client = discord.Client()
 intents = discord.Intents.default()
 intents.members = True
 
 # Discord Token for intern_helper_bot
-TOKEN = 'DISCORD_TOKEN'
+TOKEN = 'ODU3NzgxNDgxMDM1OTIzNDY3.YNUlQQ.vRLxlUh2nlB-E2PfHORDjDWM3rg'
+intern_helper_bot = commands.Bot(command_prefix='$', intents=intents)
+
 # adding connection to internships.db
 connection = sqlite3.connect("internships.db")
 
 # creating connection to database to create internships table
-cursor = connection.cursor()
-cursor.execute("CREATE TABLE internships (Company TEXT, Position TEXT, Applied Bool, Interview Bool, Offer Bool)")
-
-intern_helper_bot = commands.Bot(command_prefix='$', intents=intents)
+#cursor = connection.cursor()
+#cursor.execute("""CREATE TABLE internships (Company text, Position text, Applied Bool, Interview Bool, Offer Bool)""")
 
 # help commands for user
 def help_commands():
@@ -122,7 +123,7 @@ async def save_job(ctx, *args):
         for arg in args:
             commands.append(arg)
 
-        query = "INSERT INTO internships VALUES ({company},{pos},false, false, false)".format(company=args[0],pos=args[1])
+        query = "INSERT INTO internships VALUES ('{company}','{pos}',false, false, false)".format(company=args[0],pos=args[1])
         cursor.execute(query)
         await ctx.send("Job listing saved!")
     except sqlite3.Error as error:
@@ -140,13 +141,16 @@ async def insert_apply(ctx, *args):
 
     try:
         cursor = connection.cursor()
-        query = "UPDATE internships SET Applied=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        query = "UPDATE internships SET Applied=true WHERE Company = '{company}' && Position = '{pos}'".format(company=args[0],pos=args[1])
         cursor.execute(query)
     except sqlite3.Error as error:
         logging.error("Error: ", error)
-        cursor = connection.cursor()
-        query = "INSERT INTO internships Values({company}, {pos}, true, false, false)".format(company=args[0],pos=args[1])
-        cursor.execute(query)
+        if len(commands) == 2:
+            cursor = connection.cursor()
+            query = "INSERT INTO internships Values({company}, {pos}, true, false, false)".format(company=args[0],pos=args[1])
+            cursor.execute(query)
+        else:
+            await ctx.send("Please check the input as you are missing the company name or position (or both).")
         #await ctx.send("Please check the input as you are missing the company name or position (or both).")
     finally:
         await ctx.send("Apply tag added to job listing. Good luck on your job search!")
@@ -162,7 +166,7 @@ async def insert_interview(ctx, *args):
 
     try:
         cursor = connection.cursor()
-        query = "UPDATE internships SET Applied=true, Interview=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        query = "UPDATE internships SET Applied=true, Interview=true WHERE Company = '{company}' && Position = '{pos}'".format(company=args[0],pos=args[1])
         cursor.execute(query)
     except sqlite3.Error as error:
         logging.error("Error: ", error)
@@ -201,7 +205,7 @@ async def insert_offer(ctx, *args):
 async def find_company(ctx, arg):
     try:
         cursor = connection.cursor()
-        query = "SELECT * FROM internships WHERE Company={company}".format(company=arg)
+        query = "SELECT * FROM internships WHERE Company = '{company}'".format(company=arg)
         cursor.execute(query)
 
         rows = cursor.fetchall()
@@ -219,7 +223,7 @@ async def find_company(ctx, arg):
 async def find_position(ctx, arg):
     try:
         cursor = connection.cursor()
-        query = "SELECT * FROM internships WHERE Position={pos}".format(pos=arg)
+        query = "SELECT * FROM internships WHERE Position = '{pos}'".format(pos=arg)
         cursor.execute(query)
 
         rows = cursor.fetchall()
@@ -302,5 +306,6 @@ async def get_database(ctx):
 async def on_command_error(ctx, error):
     if isinstance(error, CommandNotFound):
         await ctx.send(embed = help_commands())
+
 
 intern_helper_bot.run(TOKEN)
