@@ -188,7 +188,7 @@ async def insert_offer(ctx, *args):
 
     try:
         cursor = connection.cursor()
-        query = "UPDATE internships SET Applied=true, Interview=true, Offer=true WHERE Company={company} && Position={pos}".format(company=args[0],pos=args[1])
+        query = "UPDATE internships SET Applied=true, Interview=true, Offer=true WHERE Company = '{company}' && Position = '{pos}'".format(company=args[0],pos=args[1])
         cursor.execute(query)
     except sqlite3.Error as error:
         logging.error("Error: ", error)
