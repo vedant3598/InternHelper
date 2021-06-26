@@ -30,18 +30,18 @@ def help_commands():
     )
 
     fields = [("$server_info", "Prints information about the server", False),
-            ("$search_job \"<company name>\" \"<position>\"", "Searches for job listings with company name and position provided", False),
-            ("$search_position \"<position>\"", "Searches for job listings with position provided", False),
-            ("$search_company \"<company name>\"", "Searches for job listings with company name provided", False),
-            ("$save_job \"<company name>\" \"<position>\"", "Saves job listing in the database ", False),
-            ("$insert_apply \"<company name>\" \"<position>\"", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False),
-            ("$insert_interview \"<company name>\" \"<position>\"", "Adds interview tag to an existing job listing in the database; if job listing does not exist, adds it with interview tag", False),
-            ("$insert_offer \"<company name>\" \"<position>\"", "Adds offer tag to an existing job listing in the database; if job listing does not exist, adds it with offer tag", False),
-            ("$find_company \"<company name>\"", "Searches for jobs in the database with company name provided", False),
-            ("$find_position \"<position>\"", "Searches for jobs in the database with position provided", False),
-            ("$find_applied \"<bool>\"", "Searches for jobs in the database based on applied boolean value provided (true or false)", False),
-            ("$find_interviews \"<bool>\"", "Searches for jobs in the database based on interview boolean value provided (true or false)", False),
-            ("$find_offers \"<bool>\"", "Searches for jobs in the database based on offer boolean value provided (true or false)", False),
+            ("$search_job <company name> <position>", "Searches for job listings with company name and position provided", False),
+            ("$search_position <position>", "Searches for job listings with position provided", False),
+            ("$search_company <company name>", "Searches for job listings with company name provided", False),
+            ("$save_job <company name> <position>", "Saves job listing in the database ", False),
+            ("$insert_apply <company name> <position>", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False),
+            ("$insert_interview <company name> <position>", "Adds interview tag to an existing job listing in the database; if job listing does not exist, adds it with interview tag", False),
+            ("$insert_offer <company name> <position>", "Adds offer tag to an existing job listing in the database; if job listing does not exist, adds it with offer tag", False),
+            ("$find_company <company name>", "Searches for jobs in the database with company name provided", False),
+            ("$find_position <position>", "Searches for jobs in the database with position provided", False),
+            ("$find_applied <bool>", "Searches for jobs in the database based on applied boolean value provided (true or false)", False),
+            ("$find_interviews <bool>", "Searches for jobs in the database based on interview boolean value provided (true or false)", False),
+            ("$find_offers <bool>", "Searches for jobs in the database based on offer boolean value provided (true or false)", False),
             ("$get_database", "Outputs the database to the user", False)]
 
     for name, value, inline in fields:
@@ -72,7 +72,7 @@ async def server_info(ctx):
     await ctx.send(embed = server)
 
 
-# searches for job listings with company name and position provided - search "<company name>" "<position>" 
+# searches for job listings with company name and position provided - search <company name> <position> 
 @intern_helper_bot.command()
 async def search_job(ctx, *args):
     try:
@@ -86,7 +86,7 @@ async def search_job(ctx, *args):
         logging.error("Error: ", Error)
 
 
-# searches for job listings with position provided - search "<position>"
+# searches for job listings with position provided - search <position>
 @intern_helper_bot.command()
 async def search_position(ctx, *args):
     try:
@@ -100,7 +100,7 @@ async def search_position(ctx, *args):
         logging.error("Error: ", Error)
 
 
-# searches for job listings with company provided - search "<company>"
+# searches for job listings with company provided - search <company>
 @intern_helper_bot.command()
 async def search_company(ctx, *args):
     try:
@@ -114,7 +114,7 @@ async def search_company(ctx, *args):
         logging.error("Error: ", Error)
 
 
-# saves job listing in the database - save "<company name>" "<position>"
+# saves job listing in the database - save <company name> <position>
 @intern_helper_bot.command()
 async def save_job(ctx, *args):
     try:
@@ -132,7 +132,7 @@ async def save_job(ctx, *args):
 
 
 # adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag
-# insert_apply "<company name>" "<position>"
+# insert_apply <company name> <position>
 @intern_helper_bot.command()
 async def insert_apply(ctx, *args):
     commands = []
