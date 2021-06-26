@@ -1,6 +1,6 @@
 TO DO:
 * Build out search, insert, and save job listing commands (May 31, 2021 - June 23, 2021) - Done
-* Test codebase (June 24, 2021 - June 25, 2021) - Done
+* Test search, insert, and save job listing commands (June 24, 2021 - June 25, 2021) - Done
 * Integrate Indeed and LinkedIn job searching APIS (June 26, 2021 - July 10, 2021)
 * Test Indeed and LinkedIn job searching APIS (July 11, 2021 - July 18, 2021)
 * (Maybe) Add capability that allows user to get graphs (of something useful) (July 19, 2021 - August 2, 2021)
