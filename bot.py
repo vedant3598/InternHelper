@@ -164,18 +164,21 @@ async def insert_interview(ctx, *args):
     for arg in args:
         commands.append(arg)
 
-    try:
+    if len(commands) == 2:
         cursor = connection.cursor()
-        query = "UPDATE internships SET Applied=true, Interview=true WHERE Company = '{company}' AND Position = '{pos}'".format(company=args[0],pos=args[1])
-        cursor.execute(query)
-    except sqlite3.Error as error:
-        logging.error("Error: ", error)
-        cursor = connection.cursor()
-        query = "INSERT INTO internships Values({company}, {pos}, true, true, false)".format(company=args[0],pos=args[1])
-        cursor.execute(query)
-        #await ctx.send("Please check the input as you are missing the company name or position (or both).")
-    finally:
+        query = "SELECT * FROM internships WHERE EXISTS (SELECT * FROM internships WHERE Company = '{company}' AND Position = '{pos}')".format(company=args[0],pos=args[1])
+        rows = cursor.execute(query).fetchall()
+
+        if len(rows) == 0:
+            query = "INSERT INTO internships Values('{company}','{pos}', true, true, false)".format(company=args[0],pos=args[1])
+            cursor.execute(query)
+        else:
+            query = "UPDATE internships SET Applied = true, Interview = true WHERE Company = '{company}' AND Position = '{pos}'".format(company=args[0],pos=args[1])
+            cursor.execute(query)
+
         await ctx.send("Interview tag added to job listing. Good luck on your interview, you will do great!")
+    else:
+        await ctx.send("Please check the input as you are missing the company name or position (or both).")
 
 
 # adds offer tag to an existing job listing in the database; if job listing does not exist, adds it with offer tag
