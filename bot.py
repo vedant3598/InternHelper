@@ -157,7 +157,7 @@ async def insert_apply(ctx, *args):
 
 
 # adds interview tag to an existing job listing in the database; if job listing does not exist, adds it with interview tag
-# insert_interview "<company name>" "<position>"
+# insert_interview <company name> <position>
 @intern_helper_bot.command()
 async def insert_interview(ctx, *args):
     commands = []
@@ -179,7 +179,7 @@ async def insert_interview(ctx, *args):
 
 
 # adds offer tag to an existing job listing in the database; if job listing does not exist, adds it with offer tag
-# insert_offer "<company name>" "<position>"
+# insert_offer <company name> <position>
 @intern_helper_bot.command()
 async def insert_offer(ctx, *args):
     commands = []
@@ -200,7 +200,7 @@ async def insert_offer(ctx, *args):
         await ctx.send("Offer tag added to job listing. Great job on getting your offer letter!")
 
 
-# search for job in the database based on company - find_company "<company name>"
+# search for job in the database based on company - find_company <company name>
 @intern_helper_bot.command()
 async def find_company(ctx, arg):
     try:
@@ -218,7 +218,7 @@ async def find_company(ctx, arg):
         await ctx.send("Please check the input as you might be missing the company name.")
 
 
-# search for job in the database based on position - find_position "<position>"
+# search for job in the database based on position - find_position <position>
 @intern_helper_bot.command()
 async def find_position(ctx, arg):
     try:
@@ -236,7 +236,7 @@ async def find_position(ctx, arg):
         await ctx.send("Please check the input as you might be missing the position.")
 
 
-# search for job in the database based on applied - find_applied "<bool>"
+# search for job in the database based on applied - find_applied <bool>
 @intern_helper_bot.command()
 async def find_applied(ctx, arg):
     try:
@@ -256,7 +256,7 @@ async def find_applied(ctx, arg):
         await ctx.send("Please check the input as you might be missing the \'Applied\' boolean tag (true or false).")
 
 
-# search for job in the database based on interview - find_interviews "<bool>"
+# search for job in the database based on interview - find_interviews <bool>
 @intern_helper_bot.command()
 async def find_interviews(ctx, arg):
     try:
@@ -276,7 +276,7 @@ async def find_interviews(ctx, arg):
         await ctx.send("Please check the input as you might be missing the \'Interview\' boolean tag (true or false).")
 
 
-# search for job in the database based on offer - find_offers "<bool>"
+# search for job in the database based on offer - find_offers <bool>
 @intern_helper_bot.command()
 async def find_offers(ctx, arg):
     try:
