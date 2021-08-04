@@ -4,7 +4,6 @@ import os
 import sqlite3
 from discord.ext import commands
 from discord.ext.commands.errors import CommandNotFound
-import logging
 
 client = discord.Client()
 intents = discord.Intents.default()
@@ -18,8 +17,8 @@ intern_helper_bot = commands.Bot(command_prefix='$', intents=intents)
 connection = sqlite3.connect("internships.db")
 
 # creating connection to database to create internships table
-#cursor = connection.cursor()
-#cursor.execute("""CREATE TABLE internships (Company text, Position text, Applied Bool, Interview Bool, Offer Bool)""")
+cursor = connection.cursor()
+cursor.execute("""CREATE TABLE internships (Company text, Position text, Applied Bool, Interview Bool, Offer Bool)""")
 
 # help commands for user
 def help_commands():
@@ -32,7 +31,6 @@ def help_commands():
     fields = [("$server_info", "Prints information about the server", False),
             ("$search_job <company name> <position>", "Searches for job listings with company name and position provided", False),
             ("$search_position <position>", "Searches for job listings with position provided", False),
-            ("$search_company <company name>", "Searches for job listings with company name provided", False),
             ("$save_job <company name> <position>", "Saves job listing in the database ", False),
             ("$insert_apply <company name> <position>", "Adds apply tag to an existing job listing in the database; if job listing does not exist, adds it with apply tag", False),
             ("$insert_interview <company name> <position>", "Adds interview tag to an existing job listing in the database; if job listing does not exist, adds it with interview tag", False),
@@ -72,7 +70,7 @@ async def server_info(ctx):
     await ctx.send(embed = server)
 
 
-# searches for job listings with company name and position provided - search <company name> <position> 
+# searches for job listings with company name and position provided - search <location(postal code or "city, state/province/region" combination)> <position> 
 @intern_helper_bot.command()
 async def search_job(ctx, *args):
     try:
@@ -86,7 +84,7 @@ async def search_job(ctx, *args):
         logging.error("Error: ", Error)
 
 
-# searches for job listings with position provided - search <position>
+# searches for job listings with position provided - search <country> <position>
 @intern_helper_bot.command()
 async def search_position(ctx, *args):
     try:
@@ -98,21 +96,6 @@ async def search_position(ctx, *args):
     except Error:
         # Change this error message with more appropriate message
         logging.error("Error: ", Error)
-
-
-# searches for job listings with company provided - search <company>
-@intern_helper_bot.command()
-async def search_company(ctx, *args):
-    try:
-        cursor = connection.cursor()
-
-        command_words = []
-
-        cursor.execute("")
-    except Error:
-        # Change this error message with more appropriate message
-        logging.error("Error: ", Error)
-
 
 # saves job listing in the database - save <company name> <position>
 @intern_helper_bot.command()
