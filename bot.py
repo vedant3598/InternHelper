@@ -10,7 +10,7 @@ intents = discord.Intents.default()
 intents.members = True
 
 # Discord Token for intern_helper_bot
-TOKEN = 'ODU3NzgxNDgxMDM1OTIzNDY3.YNUlQQ.vRLxlUh2nlB-E2PfHORDjDWM3rg'
+TOKEN = '****************************************'
 intern_helper_bot = commands.Bot(command_prefix='$', intents=intents)
 
 # adding connection to internships.db
