@@ -9,7 +9,6 @@ client = IndeedClient(publisher = )
 client_hostname = socket.gethostname()
 client_ip_address = socket.gethostbyname(client_hostname)
 
-# 
 def position_location(location: str, position: str):
     parameters = {
         'q': "{position}",
