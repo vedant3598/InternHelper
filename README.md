@@ -1,17 +1,3 @@
 # InternHelper
-A discord bot that helps individuals find and save internships among much more.
-
-## LinkedIn API
-
-To get LinkedIn API: 
-```pip install python3-linkedin```
-
-Commands to clone repo if above command does not work:
-
-```
-First clone the repository
-git clone https://github.com/DEKHTIARJonathan/python3-linkedin.git
-
-Then install the library
-python setup.py install
-```
+Leveraging Python & Discord API to build Discord bot that automates finding internships through Indeed’s API on inputs specified by users.
+Created a locally-cached SQLite database to store job information to decrease latency & generating graphs using Plotly to provide job.
