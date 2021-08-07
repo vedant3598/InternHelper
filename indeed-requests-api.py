@@ -28,11 +28,26 @@ def position_location(location: str, position: str):
 
 def position(position: str):
     us_states = getUSAStates
+    canada_provinces = getCanadaProvinces
 
     for us_state in us_states:
         parameters = {
             'q': "{position}",
             'l': "{us_state}",
+            'fromage': "12",
+            'limit': "25",
+            'filter': "1",
+            'userip': "{client_ip_address}".format(),
+            'useragent': ""
+        }
+
+        search_response = client.search(**parameters)
+        return search_response
+    
+    for canada_province in canada_provinces:
+        parameters = {
+            'q': "{position}",
+            'l': "{canada_province}",
             'fromage': "12",
             'limit': "25",
             'filter': "1",
@@ -45,3 +60,8 @@ def position(position: str):
 
 def getUSAStates():
     return us.states.State
+
+def getCanadaProvinces():
+    canada_provinces = ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland & Labrador', 
+    'Northwest Territories', 'Nova Scotia', 'Nunavut', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan', 'Yukon']
+    return canada_provinces
