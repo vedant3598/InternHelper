@@ -88,6 +88,7 @@ async def search_job(ctx, *args):
 @intern_helper_bot.command()
 async def search_position(ctx, *args):
     try:
+        
         cursor = connection.cursor()
 
         command_words = []
