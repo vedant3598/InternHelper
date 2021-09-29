@@ -1,8 +1,7 @@
 TO DO:
 * Build out search, insert, and save job listing commands (May 31, 2021 - June 23, 2021) - Done
 * Test search, insert, and save job listing commands (June 24, 2021 - June 25, 2021) - Done
-* Integrate Indeed job searching APIs (August 4, 2021 - August 8, 2021)
-* Test Indeed job searching APIS (August 8, 2021 - August 11, 2021)
-* Add capability that allows user to get graphs of job statistics (August 11, 2021 - August 18, 2021)
-* Test entirety of bot (August 18, 2021 - September 1, 2021)
-* Publish bot (September 1, 2021)
+* Integrate Indeed job searching APIs (August 4, 2021 - August 8, 2021) - Done
+* Test Indeed job searching APIS (August 8, 2021 - August 11, 2021) - Done
+* Add capability that allows user to get graphs of job statistics (currently working on)
+* Change Indeed API to another API (currently working on)
